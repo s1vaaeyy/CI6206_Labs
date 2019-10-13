@@ -1,99 +1,45 @@
 package servlets;
-
-import java.io.*;
-import java.io.IOException;
-import java.sql.Date;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-/**
- * Servlet implementation class LoginServlet
- */
-@WebServlet("/LoginServlet")
+ import java.io.IOException;
+ import javax.servlet.ServletException;
+ import javax.servlet.http.HttpServlet;
+ import javax.servlet.http.HttpServletRequest;
+ import javax.servlet.http.HttpServletResponse;
+ 
+import com.mvc.bean.LoginBean;
+import com.mvc.dao.LoginDao;
+import com.mvc.dao.RegisterDao;
+ 
 public class LoginServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+ 
+public LoginServlet() {
+ }
+ 
+protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+ 
+//Here username and password are the names which I have given in the input box in Login.jsp page. Here I am retrieving the values entered by the user and keeping in instance variables for further use.
+ 
+ String Cust_Email = request.getParameter("Cust_Email");
+ String Cust_Password = request.getParameter("Cust_Password");
+ 
+LoginBean loginBean = new LoginBean(); //creating object for LoginBean class, which is a normal java class, contains just setters and getters. Bean classes are efficiently used in java to access user information wherever required in the application.
+ 
+loginBean.setCust_Email(Cust_Email); //setting the username and password through the loginBean object then only you can get it in future.
+loginBean.setCust_Password(Cust_Password);
+ 
+LoginDao loginDao = new LoginDao(); //creating object for LoginDao. This class contains main logic of the application.
+ 
+String userValidate = loginDao.authenticateUser(loginBean); //Calling authenticateUser function
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public LoginServlet() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// HTTPSession
-
-		HttpSession session = request.getSession(true);
-
-		// HTTPResponse
-
-		response.setContentType("text/html");
-		PrintWriter out = response.getWriter();
-
-		// Referer-Identify the referer
-		String referer = request.getHeader("referer");
-
-		// print session info
-
-		Date created = new Date(session.getCreationTime());
-		Date accessed = new Date(session.getLastAccessedTime());
-		out.println("Session ID " + session.getId());
-		out.println("Created: " + created);
-		out.println("Last Accessed: " + accessed);
-
-		String id = request.getParameter("id");
-		String password = request.getParameter("password");
-
-		if (id != "" && password != "") {
-			try {
-				// AccountDBAO db = new AccountDBAO();
-				// call DAO to verify login and password with DB in later practical
-				boolean status = true;
-
-				if (status) {
-
-					// store the user id value into session
-					session.setAttribute("id", id);
-					// retrieve user id from session and display
-					out.println("<html>");
-					out.println("<head>");
-					out.println("<title>Response from LoginServlet</title>");
-					out.println("</head>");
-					out.println("<body>");
-					out.println("User id: <h1>" + (String) session.getAttribute("id") + "</h1>");
-					out.println("</body>");
-					out.println("</html>");
-					out.close();
-
-				} else
-					response.sendRedirect(referer);
-
-			} catch (Exception e) {
-
-				e.printStackTrace();
-			}
-		}
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
-
+if(userValidate.equals("SUCCESS")) //If function returns success string then user will be rooted to Home page
+ {
+ request.setAttribute("Cust_Email", Cust_Email); //with setAttribute() you can define a "key" and value pair so that you can get it in future using getAttribute("key")
+ request.getRequestDispatcher("/Home.jsp").forward(request, response);//RequestDispatcher is used to send the control to the invoked page.
+ }
+ else
+ {
+ request.setAttribute("errMessage", userValidate); //If authenticateUser() function returnsother than SUCCESS string it will be sent to Login page again. Here the error message returned from function has been stored in a errMessage key.
+ request.getRequestDispatcher("/Login.jsp").forward(request, response);//forwarding the request
+ }
+ }
+ 
 }

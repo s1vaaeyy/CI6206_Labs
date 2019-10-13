@@ -8,7 +8,7 @@ public class RegisterBean {
  private String Cust_First_Name;
  private String Cust_Second_Name;
  private String Cust_DOB;
- private String Reg_Date;
+ private Date Reg_Date;
  private String Cust_ID;
  private String Country_Origin;
  private String Cust_Password;
@@ -72,18 +72,14 @@ public class RegisterBean {
  this.Cust_ID= Cust_ID;
  }
 
- public String getReg_Date() {
+ public Date getReg_Date() {
  return Reg_Date;
  }
  
- public void setReg_Date(String Reg_Date) {
- this.Cust_ID= Reg_Date;
+ public void setReg_Date(Date Reg_Date) {
+ this.Reg_Date= Reg_Date;
  }
- 
- 
- 
 
-	
 }
 
 

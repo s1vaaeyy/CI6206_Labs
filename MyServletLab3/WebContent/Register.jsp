@@ -6,6 +6,41 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Register</title>
 <script> 
+function emailcheck(str) {
+	var at="@"
+	var dot="."
+	var lat=str.indexOf(at)
+	var lstr=str.length
+	var ldot=str.indexOf(dot)
+	if (str.indexOf(at)==-1){
+	alert("Invalid E-mail ID1");
+	return false;
+	}
+	else if  (str.indexOf(at)==-1 || str.indexOf(at)==0 || str.indexOf(at)==lstr){
+	alert("Invalid E-mail ID2");
+	return false;
+	}
+	else if  (str.indexOf(dot)==-1 || str.indexOf(dot)==0 || str.indexOf(dot)==lstr){
+	alert("Invalid E-mail ID3");
+	return false;
+	}
+	else if  (str.indexOf(at,(lat+1))!=-1){
+	alert("Invalid E-mail ID4");
+	return false;
+	}
+	else if  (str.substring(lat-1,lat)==dot || str.substring(lat+1,lat+2)==dot){
+	alert("Invalid E-mail ID5");
+	return false;
+	}
+	else if  (str.indexOf(dot,(lat+2))==-1){
+	alert("Invalid E-mail ID6");
+	return false;
+	}
+	else if  (str.indexOf(" ")!=-1){
+	alert("Invalid E-mail ID7");
+	return false;
+	}
+	}
 function validate()
 { 
  var Cust_First_Name = document.form.Cust_First_Name.value;
@@ -14,8 +49,8 @@ function validate()
  var Cust_DOB = document.form.Cust_DOB.value;
  var Country_Origin = document.form.Country_Origin.value;
  var password = document.form.password.value;
- var Cust_Password = document.form.Cust_Password.value; 
- if (Cust_First_Name==null || Cust_First_Name =="")
+ var Cust_Password = document.form.Cust_Password.value;
+ if (Cust_First_Name==null || Cust_First_Name=="")
  { 
  alert("Fist Name can't be blank"); 
  return false; 
@@ -29,6 +64,10 @@ function validate()
  { 
  alert("Email can't be blank"); 
  return false; 
+ }
+ else if (emailcheck(Cust_Email)==false)
+ {
+ return false;
  }
  else if (Cust_DOB==null || Cust_DOB =="")
  { 
@@ -50,11 +89,11 @@ function validate()
  alert("Confirm Password should match with the Password"); 
  return false; 
  } 
- } 
+}
 </script> 
 </head>
 <body>
-<center><h2>Java Registration application using MVC and MySQL </h2></center>
+<center><h2>This is our registeration page. (Page 2) </h2></center>
 <form name="form" action="RegisterServlet" method="post" onsubmit="return validate()">
 <table align="center">
  <tr>
@@ -66,15 +105,15 @@ function validate()
  <td><input type="text" name="Cust_Second_Name" /></td>
  </tr>
  <tr>
- <td>Cust_Email</td>
+ <td>Customer Email</td>
  <td><input type="text" name="Cust_Email" /></td>
  </tr>
  <tr>
- <td>Cust_DOB</td>
- <td><input type="text" name="Cust_DOB" /></td>
+ <td>Customer Date of Birth</td>
+ <td><input type="text" name="Cust_DOB"></td>
  </tr>
  <tr>
- <td>Country_Origin</td>
+ <td>Customer Country of Origin</td>
  <td><input type="text" name="Country_Origin" /></td>
  </tr>
  <tr>
