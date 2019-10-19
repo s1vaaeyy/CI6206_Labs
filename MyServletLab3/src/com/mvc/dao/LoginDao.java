@@ -29,6 +29,8 @@ import java.sql.Connection;
 		 String userNameDB = "";
  
 		 String passwordDB = "";
+		 
+		 String CustID_DB ="";
  
 
 		 try
@@ -39,7 +41,7 @@ import java.sql.Connection;
  
 			 statement = con.createStatement(); //Statement is used to write queries. Read more about it.
  
-			 resultSet = statement.executeQuery("select Cust_Email,Cust_Password from Customer_Details"); //Here table name is users and userName,password are columns. fetching all the records and storing in a resultSet.
+			 resultSet = statement.executeQuery("select Cust_Email,Cust_Password,Cust_ID from Customer_Details"); //Here table name is users and userName,password are columns. fetching all the records and storing in a resultSet.
  
 
 			 while(resultSet.next()) // Until next row is present otherwise it return false
@@ -49,6 +51,8 @@ import java.sql.Connection;
 				 userNameDB = resultSet.getString("Cust_Email"); //fetch the values present in database
   
 				 passwordDB = resultSet.getString("Cust_Password");
+				 
+				 CustID_DB = resultSet.getString("Cust_ID");
  
    
 				 if(Cust_Email.equals(userNameDB) && Cust_Password.equals(passwordDB))
